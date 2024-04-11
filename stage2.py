@@ -1,43 +1,43 @@
 import os
 import pandas as pd
 
-# Путь к папке с файлами XLSX
+# Path to the folder containing XLSX files
 folder_path = r'C:\Users\kyana\Desktop\test\test'
 
-# Список всех файлов XLSX в папке
+# List of all XLSX files in the folder
 file_list = [f for f in os.listdir(folder_path) if f.endswith('.xlsx')]
 
-# Создание пустого DataFrame для хранения объединенных данных
+# Create an empty DataFrame to store the merged data
 merged_data = pd.DataFrame()
 
-# Заданная структура столбцов
-desired_columns = ['НомСч', 'ПорНом', 'ПорНомДФ', 'ВремяОпер', 'ДатаОпер', 'НазПлат', 'ПопМСКВремя',
-                   'ПорНомБлок', 'СумДебета', 'СумКредита', 'ВидДок', 'ДатаДок', 'НомДок',
-                   'НаимБП', 'БИКБП', 'ИННПП', 'КПППП', 'НаимПП', 'НомСЧПП',
-                   'НомКорСЧ', 'Должность', 'Имя', 'Отчество', 'Фамилия']
+# Specified column structure
+desired_columns = ['AccountNum', 'ItemNum', 'ItemNumDF', 'OperationTime', 'OperationDate', 'PaymentName', 'PopMSKTime',
+                   'ItemNumBlock', 'DebitAmount', 'CreditAmount', 'DocType', 'DocDate', 'DocNum',
+                   'BPName', 'BPBIK', 'BPINN', 'BPKPP', 'PPName', 'PPAccountNum',
+                   'CorrespondentAccount', 'Position', 'FirstName', 'MiddleName', 'LastName']
 
-# Проход по каждому файлу XLSX
+# Iterate through each XLSX file
 for file_name in file_list:
     file_path = os.path.join(folder_path, file_name)
 
-    # Чтение файла XLSX и получение данных с четвертой строки
+    # Read the XLSX file and get data from the fourth row
     df = pd.read_excel(file_path, header=None, skiprows=3)
 
-    # Проверка наличия столбцов в файле
+    # Check for existing columns in the file
     existing_columns = set(df.iloc[0].tolist())
     columns_to_include = list(set(desired_columns) & existing_columns)
 
-    # Проверка наличия хотя бы одного столбца для включения
+    # Check if there's at least one column to include
     if columns_to_include:
-        # Переупорядочивание и включение только существующих столбцов
+        # Reorder and include only existing columns
         df = df[columns_to_include]
 
-        # Объединение данных с помощью метода concat
+        # Merge data using concat method
         merged_data = pd.concat([merged_data, df], ignore_index=True)
 
-# Проверка размера объединенных данных
+# Check the size of the merged data
 if merged_data.shape[0] > 900000:
-    # Разделение данных на части с ограничением в 900000 строк
+    # Split data into chunks with a limit of 900000 rows
     num_chunks = merged_data.shape[0] // 900000 + 1
 
     for i in range(num_chunks):
@@ -46,11 +46,11 @@ if merged_data.shape[0] > 900000:
 
         chunk_df = merged_data[start_idx:end_idx]
 
-        # Создание нового файла XLSX на основе части данных
-        output_file_name = f"merg{i+1}.xlsx"
+        # Create a new XLSX file based on the chunk of data
+        output_file_name = f"merge{i+1}.xlsx"
         output_file_path = os.path.join(folder_path, output_file_name)
         chunk_df.to_excel(output_file_path, index=False)
 else:
-    # Создание нового файла XLSX на основе объединенных данных
+    # Create a new XLSX file based on the merged data
     output_file_path = os.path.join(folder_path, "merged.xlsx")
     merged_data.to_excel(output_file_path, index=False)
