@@ -90,10 +90,3 @@ def xml_folder_to_xlsx(xml_folder, xlsx_folder):
         xlsx_files[attributes_key] = xlsx_file_path
 
     return xlsx_files
-
-
-# Пример использования:
-xml_folder = r'C:\Users\kyana\Desktop\test\Камелот'
-xlsx_folder = r'C:\Users\kyana\Desktop\test\Камелот xlsx'
-
-result = xml_folder_to_xlsx(xml_folder, xlsx_folder)
