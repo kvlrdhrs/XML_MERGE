@@ -59,10 +59,6 @@ merge_xlsx_files(folder_path)
 - XML parsing errors may occur if the XML files are not well-formed.
 - The script assumes consistent column structures across XLSX files for merging.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ---
 
 Feel free to customize this README according to your project's specific details and requirements!
