@@ -1,7 +1,3 @@
-Certainly! Here's a README file for your code:
-
----
-
 # XML to XLSX Converter and Data Merger
 
 This Python script is designed to convert XML files to XLSX format and merge data from multiple XLSX files into a single file.
